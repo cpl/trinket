@@ -7,7 +7,7 @@ import "encoding/xml"
 type ResponseError struct {
 	XMLName xml.Name
 	Code    int    `xml:"code"`
-	Body    string `xml:"body`
+	Body    string `xml:"body"`
 }
 
 var responseErrorAuth = ResponseError{

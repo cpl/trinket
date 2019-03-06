@@ -67,5 +67,6 @@ trinket 3010 200 "john mike paul" "doe pass test" 2
   - [ ] Parse individual request
   - [ ] Handle URI GETs
   - [ ] Return responses
+- [ ] Create user views (Bootstrap)
 - [ ] Create binary releases (macOS, Linux)
 - [ ] Implement stateful server, some database (SQL)

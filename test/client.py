@@ -9,13 +9,13 @@ headers = {
 }
 
 file_data = None
-with open('req.xml', 'rb') as fp:
+with open('test/req.xml', 'rb') as fp:
     file_data = fp.read()
 
 
 response = requests.put(URL, data=file_data, headers=headers)
 
-print(response.status_code, response.content)
+print(response.status_code, response.content, response.headers)
 
 
 

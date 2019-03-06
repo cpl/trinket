@@ -12,6 +12,7 @@ import (
 )
 
 var slots []string
+var port int
 var globalUsername string
 var globalPassword string
 var maxBookedSlots int
@@ -43,15 +44,21 @@ func init() {
 		panic(err)
 	}
 	log.Printf("maximum number of booked slots is %d\n", maxBookedSlots)
+
+	// parse port
+	port, err = strconv.Atoi(os.Args[1])
+	if err != nil {
+		panic(err)
+	}
 }
 
 func main() {
 	// create router
 	r := mux.NewRouter()
 
-	// define handlers and routes
-	r.HandleFunc("/queue/enqueue", handleEnqueue).Methods(http.MethodPut)
-	r.HandleFunc("/queue/msg/{msg_id}", handleEnqueue).Methods(http.MethodGet)
+	// define handlers and routes for PUT requests and GET responses
+	r.HandleFunc("/queue/enqueue", handleEnqueuePUT).Methods(http.MethodPut)
+	r.HandleFunc("/queue/msg/{msg_id}", handleEnqueueGET).Methods(http.MethodGet)
 
 	// user views
 	r.HandleFunc("/booking", handleBookings).Methods(http.MethodGet)
