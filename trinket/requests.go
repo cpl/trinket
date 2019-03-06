@@ -2,6 +2,11 @@ package main
 
 import "encoding/xml"
 
+const REQUEST_RESERVE = "reserve"
+const REQUEST_CANCEL = "cancel"
+const REQUEST_AVAILABILITY = "availability"
+const REQUEST_BOOKINGS = "bookings"
+
 type requestBase struct {
 	xmlNodeName xml.Name
 
