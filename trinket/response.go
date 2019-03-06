@@ -2,13 +2,6 @@ package main
 
 import "encoding/xml"
 
-type responseBase struct {
-	xmlName xml.Name
-
-	Code int    `xml:"code"`
-	Body string `xml:"body"`
-}
-
 /*
 ResponseAvailability is the response from an availability request,
 if OK it will contain a 200 code and the list of available slots.
@@ -27,9 +20,9 @@ XML FORM:
 </response>
 */
 type ResponseAvailability struct {
-	responseBase
-
-	Slots []int `xml:"body>availability>slot_id"`
+	XMLName xml.Name
+	Code    int   `xml:"code"`
+	Slots   []int `xml:"body>availability>slot_id"`
 }
 
 /*
@@ -48,7 +41,7 @@ XML FORM:
 </response>
 */
 type ResponseBookings struct {
-	responseBase
-
-	Slots []int `xml:"body>bookings>slot_id"`
+	XMLName xml.Name
+	Code    int   `xml:"code"`
+	Slots   []int `xml:"body>bookings>slot_id"`
 }

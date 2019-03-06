@@ -12,8 +12,8 @@ import (
 )
 
 var slots []string
-var username string
-var password string
+var globalUsername string
+var globalPassword string
 
 func init() {
 	// extract slot count from argv
@@ -30,11 +30,11 @@ func init() {
 
 	log.Printf("generated %d empty slots\n", slotsCount)
 
-	// user and password parsing
-	username = os.Args[3]
-	password = os.Args[4]
-	log.Printf("assigned user '%s' with password '%s'\n",
-		username, password)
+	// user and globalpassword parsing
+	globalUsername = os.Args[3]
+	globalPassword = os.Args[4]
+	log.Printf("assigned user '%s' with globalpassword '%s'\n",
+		globalUsername, globalPassword)
 
 }
 
