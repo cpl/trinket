@@ -1,5 +1,6 @@
-<availability>
-    <request_id>0</request_id>
-    <username>alex</username>
+<cancel>
+    <request_id>2</request_id>
+    <username>just</username>
     <password>test</password>
-</availability>
+    <slot_id>2</slot_id>
+</cancel>

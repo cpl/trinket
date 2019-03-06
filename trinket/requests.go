@@ -8,7 +8,7 @@ const REQUEST_AVAILABILITY = "availability"
 const REQUEST_BOOKINGS = "bookings"
 
 type requestBase struct {
-	xmlNodeName xml.Name
+	XMLName xml.Name
 
 	ID       int    `xml:"request_id"`
 	Username string `xml:"username"`

@@ -14,6 +14,7 @@ import (
 var slots []string
 var globalUsername string
 var globalPassword string
+var maxBookedSlots int
 
 func init() {
 	// extract slot count from argv
@@ -36,6 +37,12 @@ func init() {
 	log.Printf("assigned user '%s' with globalpassword '%s'\n",
 		globalUsername, globalPassword)
 
+	// parse number of max possible booked slots
+	maxBookedSlots, err = strconv.Atoi(os.Args[5])
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("maximum number of booked slots is %d\n", maxBookedSlots)
 }
 
 func main() {
@@ -58,6 +65,9 @@ func main() {
 		WriteTimeout: 60 * time.Second,
 		ReadTimeout:  60 * time.Second,
 	}
+
+	// TODO start the queue agent
+	// go ProcessListings(delay)
 
 	log.Println("starting server on localhost:" + os.Args[1])
 
