@@ -41,6 +41,10 @@ But seeing the current second year students struggle with the server (to the poi
 
 ## Usage
 
+Note that in order to simulate the COMP28112 server for Exercise 2 you will
+have to start two instances of `trinket`, one for simulating the hotel and
+one for the band.
+
 ```shell
 # Usage
 trinket <PORT> <SLOTS> <"LIST OF USERS"> <"LIST OF PASSWORDS"> <MAX BOOKINGS>
