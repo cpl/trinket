@@ -12,30 +12,31 @@ func parseListing(listing *Listing) {
 	listing.username = ""
 	listing.password = ""
 
-	// TODO check request ID is unique
+	// debug base request xml
+	fmt.Println(string(listing.Request))
 
 	// validate request
 	// this means checking it has a username, password and unique ID
 	var baseRequest requestBase
 	if err := xml.Unmarshal(listing.Request, &baseRequest); err != nil {
-		log.Printf("invalid request format")
+		log.Println("invalid request format")
 		listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
 		return
 	}
+
+	// TODO check request ID is unique
+
+	// debug base request
+	log.Printf("processing type %s, id %d for %s\n",
+		baseRequest.XMLName.Local,
+		baseRequest.ID,
+		baseRequest.Username)
 
 	// if format is valid, assign username and password to listing
 	// they will later be checked against the server users for the
 	// proper request types
 	listing.username = baseRequest.Username
 	listing.password = baseRequest.Password
-
-	// ! this should happen only for some requests Reserve, Cancel, Bookings
-	// validate username and password
-	// if !checkAuth(baseRequest.Username, baseRequest.Password) {
-	// 	log.Printf("invalid auth for request %d\n", baseRequest.ID)
-	// 	ret, _ := xml.Marshal(ResponseErrorAuth)
-	// 	return
-	// }
 
 	// validate and handle request
 	switch baseRequest.XMLName.Local {
@@ -45,7 +46,7 @@ func parseListing(listing *Listing) {
 
 		// fully parse request
 		if err := xml.Unmarshal(listing.Request, &req); err != nil {
-			log.Printf("invalid request format")
+			log.Println("invalid request format")
 			listing.username = ""
 			listing.password = ""
 			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
@@ -74,7 +75,7 @@ func parseListing(listing *Listing) {
 		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
-			req.ID, req.XMLName)
+			req.ID, req.XMLName.Local)
 
 		return
 	// --------------------------------------------------------------------
@@ -83,7 +84,7 @@ func parseListing(listing *Listing) {
 
 		// fully parse request
 		if err := xml.Unmarshal(listing.Request, &req); err != nil {
-			log.Printf("invalid request format")
+			log.Println("invalid request format")
 			listing.username = ""
 			listing.password = ""
 			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
@@ -100,7 +101,10 @@ func parseListing(listing *Listing) {
 		}
 
 		// check too many booked slots
-		if len(usersMap[req.Username]) >= maxBookedSlots {
+		if len(usersSlots[req.Username]) >= maxBookedSlots {
+			log.Printf("max booked slots, can't reserve more %d/%d\n",
+				len(usersSlots[req.Username]), maxBookedSlots)
+
 			var resErr ResponseError
 
 			resErr.XMLName = xml.Name{Local: "response"}
@@ -157,7 +161,7 @@ func parseListing(listing *Listing) {
 		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
-			req.ID, req.XMLName)
+			req.ID, req.XMLName.Local)
 
 		return
 	// --------------------------------------------------------------------
@@ -166,7 +170,7 @@ func parseListing(listing *Listing) {
 
 		// fully parse request
 		if err := xml.Unmarshal(listing.Request, &req); err != nil {
-			log.Printf("invalid request format")
+			log.Println("invalid request format")
 			listing.username = ""
 			listing.password = ""
 			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
@@ -241,7 +245,7 @@ func parseListing(listing *Listing) {
 		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
-			req.ID, req.XMLName)
+			req.ID, req.XMLName.Local)
 
 		return
 	// --------------------------------------------------------------------
@@ -250,7 +254,7 @@ func parseListing(listing *Listing) {
 
 		// fully parse request
 		if err := xml.Unmarshal(listing.Request, &req); err != nil {
-			log.Printf("invalid request format")
+			log.Println("invalid request format")
 			listing.username = ""
 			listing.password = ""
 			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
@@ -286,11 +290,11 @@ func parseListing(listing *Listing) {
 		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
-			req.ID, req.XMLName)
+			req.ID, req.XMLName.Local)
 
 		return
 	// --------------------------------------------------------------------
 	default:
-		panic("should not reach this")
+		log.Fatalln("should not reach this")
 	}
 }
