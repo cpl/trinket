@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -19,9 +20,15 @@ var usersMap map[string]string
 var usersSlots map[string][]int
 var usersIDs map[string][]int64
 
+var failChance uint32
+
 var maxBookedSlots int
 
 func init() {
+	// init rand
+	// change this to a constant value if you need predictable behavior
+	rand.Seed(time.Now().UnixNano())
+
 	// extract slot count from argv
 	slotsCount, err := strconv.Atoi(os.Args[2])
 	if err != nil {
@@ -66,6 +73,14 @@ func init() {
 			usersIDs[users[idx]] = make([]int64, 0)
 		}
 	}
+
+	// parse fail chance
+	fc, err := strconv.Atoi(os.Args[6])
+	if err != nil {
+		panic(err)
+	}
+	failChance = uint32(fc)
+	log.Printf("fail chance is %d%%\n", failChance)
 
 	// parse port
 	port, err = strconv.Atoi(os.Args[1])

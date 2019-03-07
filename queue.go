@@ -36,8 +36,8 @@ func AppendToQueue(request []byte) int {
 }
 
 // ProcessListings is a background agent that runs on it's own thread,
-// processing requests from the listing queue. After each listing the agent will
-// go to sleep for the given duration.
+// processing requests from the listing queue. After each listing the agent
+// will go to sleep for the given duration.
 // lastID acts as the last processed listing. When started it is 0, and always
 // increments by one after processing a listing. This way lastID can be used
 // as the Index for the current listing to process. Listings IDs are in

@@ -7,11 +7,28 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"golang.org/x/exp/rand"
 )
 
 func handleEnqueuePUT(w http.ResponseWriter, r *http.Request) {
 
-	// TODO add chance to fail
+	// chance to fail request "service is busy"
+	fmt.Println(rand.Uint32() % 100)
+	if rand.Uint32()%100 < failChance {
+		log.Println("request failed, service unavailable")
+
+		// wrote headers
+		w.Header().Add("Content-Type", "text/html; charset=utf-8")
+		w.Header().Add("Status", "503")
+		w.Header().Add("Server", "Trinket")
+		w.Header().Add("Connection", "close")
+		w.Header().Add("Cache-Control", "private, max-age=0, must-revalidate")
+
+		// write 503
+		w.WriteHeader(http.StatusServiceUnavailable)
+
+		return
+	}
 
 	// check headers
 	if !checkHeaders(r) {

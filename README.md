@@ -47,16 +47,17 @@ one for the band.
 
 ```shell
 # Usage
-trinket <PORT> <SLOTS> <"LIST OF USERS"> <"LIST OF PASSWORDS"> <MAX BOOKINGS>
+trinket <PORT> <SLOTS> <USER LIST> <PASS LIST> <MAX BOOKINGS> <FAIL CHANCE %>
 
 # Examples
 
 # Create a server, listening on port 3000, with 200 slots a single user john
 # with the password doe and a maximum number of 2 booked slots per user
-trinket 3010 200 "john" "doe" 2
+# with a 43% chance fail for each PUT/GET request on queue
+trinket 3010 200 "john" "doe" 2 43
 
 # Create a server with multiple users
-trinket 3010 200 "john mike paul" "doe pass test" 2
+trinket 3010 200 "john mike paul" "doe pass test" 2 43
 ```
 
 ## TODO

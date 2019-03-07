@@ -13,7 +13,7 @@ XML = """
 
 
 URL = "http://localhost:3000/queue/enqueue"
-# URL = "<REDACTED>"
+# URL = "<READACTED>"
 
 headers = {
     "Content-Type": "application/xml",
