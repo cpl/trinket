@@ -63,13 +63,14 @@ trinket 3010 200 "john mike paul" "doe pass test" 2 43
 ## TODO
 
 - [ ] Create Wiki detailing the protocol, expected & mimic behavior
-- [ ] Finish stateless server mimic
+- [x] Finish stateless server mimic
   - [x] Receive requests PUT
   - [x] Enqueue requests
   - [x] Parse listing queue
   - [x] Parse individual request
-  - [ ] Handle URI GETs
-  - [ ] Return responses
-- [ ] Create user views (Bootstrap)
+  - [x] Handle URI GETs
+  - [x] Return responses
+- [x] Create user views
+- [ ] Fancy user views with Bootstrap
 - [ ] Create binary releases (macOS, Linux)
 - [ ] Implement stateful server, some database (SQL)

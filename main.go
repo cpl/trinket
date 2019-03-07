@@ -25,10 +25,6 @@ var failChance uint32
 var maxBookedSlots int
 
 func init() {
-	// init rand
-	// change this to a constant value if you need predictable behavior
-	rand.Seed(time.Now().UnixNano())
-
 	// extract slot count from argv
 	slotsCount, err := strconv.Atoi(os.Args[2])
 	if err != nil {
@@ -90,6 +86,10 @@ func init() {
 }
 
 func main() {
+	// init rand
+	// change this to a constant value if you need predictable behavior
+	rand.Seed(time.Now().UnixNano())
+
 	// create router
 	r := mux.NewRouter()
 
@@ -97,7 +97,7 @@ func main() {
 	r.HandleFunc("/queue/enqueue", handleEnqueuePUT).Methods(http.MethodPut)
 
 	// GET requests must receive username and password URL queries
-	r.HandleFunc("/queue/msg/{msg_id}", handleEnqueueGET).Methods(http.MethodGet)
+	r.HandleFunc("/queue/msg/{msg_id:[0-9]+}", handleEnqueueGET).Methods(http.MethodGet)
 	r.HandleFunc(
 		"/queue/msg/{msg_id}", handleEnqueueGET).Methods(
 		http.MethodGet).Queries(
