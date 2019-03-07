@@ -17,6 +17,7 @@ var port int
 
 var usersMap map[string]string
 var usersSlots map[string][]int
+var usersIDs map[string][]int64
 
 var maxBookedSlots int
 
@@ -50,6 +51,7 @@ func init() {
 	} else {
 		usersMap = make(map[string]string, len(users))
 		usersSlots = make(map[string][]int, len(users))
+		usersIDs = make(map[string][]int64, len(users))
 
 		for idx := range users {
 			log.Printf("adding user %s: %s\n", users[idx], pswds[idx])
@@ -59,6 +61,9 @@ func init() {
 
 			// create list of booked slots for each user
 			usersSlots[users[idx]] = make([]int, 0, maxBookedSlots)
+
+			// create list for used IDs
+			usersIDs[users[idx]] = make([]int64, 0)
 		}
 	}
 

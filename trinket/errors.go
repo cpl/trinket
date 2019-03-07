@@ -21,3 +21,9 @@ var ResponseErrorInvalid = ResponseError{
 	Code:    510,
 	Body:    "Invalid Request",
 }
+
+var ResponseErrorDuplicateID = ResponseError{
+	XMLName: xml.Name{Local: "response"},
+	Code:    510,
+	Body:    "Invalid Request - Duplicate ID",
+}

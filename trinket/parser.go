@@ -24,7 +24,27 @@ func parseListing(listing *Listing) {
 		return
 	}
 
-	// TODO check request ID is unique
+	// failed auth
+	if !checkAuth(baseRequest.Username, baseRequest.Password) {
+		log.Printf("invalid auth for request %d\n", baseRequest.ID)
+		listing.username = ""
+		listing.password = ""
+		listing.Response, _ = xml.Marshal(ResponseErrorAuth)
+		return
+	}
+
+	// check for duplicate ID
+	for _, slot := range usersIDs[baseRequest.Username] {
+		if baseRequest.ID == slot {
+			log.Printf("duplicate id %d\n", baseRequest.ID)
+			listing.Response, _ = xml.Marshal(ResponseErrorDuplicateID)
+			return
+		}
+	}
+
+	// save ID
+	usersIDs[baseRequest.Username] = append(
+		usersIDs[baseRequest.Username], baseRequest.ID)
 
 	// debug base request
 	log.Printf("processing type %s, id %d for %s\n",
@@ -88,15 +108,6 @@ func parseListing(listing *Listing) {
 			listing.username = ""
 			listing.password = ""
 			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
-			return
-		}
-
-		// failed auth
-		if !checkAuth(req.Username, req.Password) {
-			log.Printf("invalid auth for request %d\n", req.ID)
-			listing.username = ""
-			listing.password = ""
-			listing.Response, _ = xml.Marshal(ResponseErrorAuth)
 			return
 		}
 
@@ -177,15 +188,6 @@ func parseListing(listing *Listing) {
 			return
 		}
 
-		// failed auth
-		if !checkAuth(req.Username, req.Password) {
-			log.Printf("invalid auth for request %d\n", req.ID)
-			listing.username = ""
-			listing.password = ""
-			listing.Response, _ = xml.Marshal(ResponseErrorAuth)
-			return
-		}
-
 		// check if invalid slot
 		// this is not specified in the docs, but it makes sense right?
 		// you shouldn't be able to cancel a slot that does not exist
@@ -258,15 +260,6 @@ func parseListing(listing *Listing) {
 			listing.username = ""
 			listing.password = ""
 			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
-			return
-		}
-
-		// failed auth
-		if !checkAuth(req.Username, req.Password) {
-			log.Printf("invalid auth for request %d\n", req.ID)
-			listing.username = ""
-			listing.password = ""
-			listing.Response, _ = xml.Marshal(ResponseErrorAuth)
 			return
 		}
 

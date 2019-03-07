@@ -10,7 +10,7 @@ const REQUEST_BOOKINGS = "bookings"
 type requestBase struct {
 	XMLName xml.Name
 
-	ID       int    `xml:"request_id"`
+	ID       int64  `xml:"request_id"`
 	Username string `xml:"username"`
 	Password string `xml:"password"`
 }
@@ -31,7 +31,7 @@ XML FORM:
 type RequestReserve struct {
 	XMLName xml.Name
 
-	ID       int    `xml:"request_id"`
+	ID       int64  `xml:"request_id"`
 	Username string `xml:"username"`
 	Password string `xml:"password"`
 
@@ -53,7 +53,7 @@ XML FORM:
 type RequestAvailability struct {
 	XMLName xml.Name
 
-	ID       int    `xml:"request_id"`
+	ID       int64  `xml:"request_id"`
 	Username string `xml:"username"`
 	Password string `xml:"password"`
 }
@@ -74,7 +74,7 @@ XML FORM:
 type RequestCancel struct {
 	XMLName xml.Name
 
-	ID       int    `xml:"request_id"`
+	ID       int64  `xml:"request_id"`
 	Username string `xml:"username"`
 	Password string `xml:"password"`
 
@@ -96,7 +96,7 @@ XML FORM:
 type RequestBookings struct {
 	XMLName xml.Name
 
-	ID       int    `xml:"request_id"`
+	ID       int64  `xml:"request_id"`
 	Username string `xml:"username"`
 	Password string `xml:"password"`
 }
