@@ -45,3 +45,23 @@ type ResponseBookings struct {
 	Code    int   `xml:"code"`
 	Slots   []int `xml:"body>bookings>slot_id"`
 }
+
+/*
+ResponseReserve is the response from a reserve request,
+if OK it will contain a 200 code and the confirmation for that slot.
+
+XML FORM:
+<response>
+<code>200</code>
+<body>
+  <reserve>
+    Reserved slot N
+  </reserve>
+</body>
+</response>
+*/
+type ResponseReserve struct {
+	XMLName xml.Name
+	Code    int    `xml:"code"`
+	Reserve string `xml:"body>reserve"`
+}

@@ -15,5 +15,6 @@ func checkHeaders(r *http.Request) bool {
 }
 
 func checkAuth(username, password string) bool {
-	return username == globalUsername && password == globalPassword
+	p, ok := usersMap[username] // get user's password and if user exists
+	return ok && p == password  // return if user exists and password matches
 }

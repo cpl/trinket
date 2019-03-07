@@ -8,8 +8,10 @@ import (
 
 func handleEnqueuePUT(w http.ResponseWriter, r *http.Request) {
 	// check headers
-	// TODO define behavior for missing headers
-	checkHeaders(r)
+	if !checkHeaders(r) {
+		w.Write([]byte("missing expected headers as requested by labscript\n"))
+		return
+	}
 
 	// read body data
 	bodyData, err := ioutil.ReadAll(r.Body)

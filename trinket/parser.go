@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/xml"
+	"fmt"
 	"log"
 )
 
@@ -45,6 +46,8 @@ func parseListing(listing *Listing) {
 		// fully parse request
 		if err := xml.Unmarshal(listing.request, &req); err != nil {
 			log.Printf("invalid request format")
+			listing.username = ""
+			listing.password = ""
 			listing.response, _ = xml.Marshal(responseErrorInvalid)
 			return
 		}
@@ -57,7 +60,7 @@ func parseListing(listing *Listing) {
 		// get all free slots
 		for idx := range slots {
 			if slots[idx] == "free" {
-				res.Slots = append(res.Slots, idx)
+				res.Slots = append(res.Slots, idx+1)
 			}
 		}
 
@@ -75,15 +78,93 @@ func parseListing(listing *Listing) {
 
 		return
 	// --------------------------------------------------------------------
-	case REQUEST_BOOKINGS:
-		// var req RequestAvailability
-		break
+	case REQUEST_RESERVE:
+		var req RequestReserve
+
+		// fully parse request
+		if err := xml.Unmarshal(listing.request, &req); err != nil {
+			log.Printf("invalid request format")
+			listing.username = ""
+			listing.password = ""
+			listing.response, _ = xml.Marshal(responseErrorInvalid)
+			return
+		}
+
+		// failed auth
+		if !checkAuth(req.Username, req.Password) {
+			log.Printf("invalid auth for request %d\n", req.ID)
+			listing.username = ""
+			listing.password = ""
+			listing.response, _ = xml.Marshal(responseErrorAuth)
+			return
+		}
+
+		// check too many booked slots
+		if len(usersMap[req.Username]) >= maxBookedSlots {
+			var resErr ResponseError
+
+			resErr.XMLName = xml.Name{Local: "response"}
+			resErr.Code = 409 // limit reached
+			resErr.Body = fmt.Sprintf(
+				"Reservation failed, you already hold the maximum permitted number of reservations - %d",
+				maxBookedSlots)
+			listing.response, _ = xml.Marshal(resErr)
+
+			return
+		}
+
+		// check if invalid slot
+		if req.SlotID < 1 || req.SlotID > len(slots) {
+			var resErr ResponseError
+
+			resErr.XMLName = xml.Name{Local: "response"}
+			resErr.Code = 403 // slot does not exist
+			resErr.Body = fmt.Sprintf("Slot %d does not exist", req.SlotID)
+			listing.response, _ = xml.Marshal(resErr)
+
+			return
+		}
+
+		// check slot already taken
+		if slots[req.SlotID-1] != "free" {
+			var resErr ResponseError
+
+			resErr.XMLName = xml.Name{Local: "response"}
+			resErr.Code = 409 // also slot is not free
+			resErr.Body = fmt.Sprintf("Slot %d is not free.", req.SlotID)
+			listing.response, _ = xml.Marshal(resErr)
+
+			return
+		}
+
+		// assign slot
+		slots[req.SlotID-1] = req.Username
+
+		// all OK, prepare response
+		var res ResponseReserve
+		res.XMLName = xml.Name{Local: "response"}
+		res.Code = 200
+		res.Reserve = fmt.Sprintf("Reserved slot %d", req.SlotID)
+
+		// create response payload
+		resBinary, err := xml.Marshal(res)
+		if err != nil {
+			panic(err)
+		}
+
+		// assign response to listing
+		listing.response = resBinary
+
+		log.Printf("parsed request %d of type '%s'\n",
+			req.ID, req.XMLName)
+
+		return
 	// --------------------------------------------------------------------
 	case REQUEST_CANCEL:
 		// var req RequestAvailability
 		break
 	// --------------------------------------------------------------------
-	case REQUEST_RESERVE:
+	case REQUEST_BOOKINGS:
 		// var req RequestAvailability
 		break
 	// --------------------------------------------------------------------

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gorilla/context"
@@ -13,8 +14,10 @@ import (
 
 var slots []string
 var port int
-var globalUsername string
-var globalPassword string
+
+var usersMap map[string]string
+var usersSlots map[string][]int
+
 var maxBookedSlots int
 
 func init() {
@@ -32,11 +35,25 @@ func init() {
 
 	log.Printf("generated %d empty slots\n", slotsCount)
 
-	// user and globalpassword parsing
-	globalUsername = os.Args[3]
-	globalPassword = os.Args[4]
-	log.Printf("assigned user '%s' with globalpassword '%s'\n",
-		globalUsername, globalPassword)
+	// user and password parsing
+	users := strings.Split(os.Args[3], " ")
+	pswds := strings.Split(os.Args[4], " ")
+	if len(users) == 0 || len(pswds) == 0 || len(users) != len(pswds) {
+		log.Println("invalid number of users and passwords")
+	} else {
+		usersMap = make(map[string]string, len(users))
+		usersSlots = make(map[string][]int, len(users))
+
+		for idx := range users {
+			log.Printf("adding user %s: %s\n", users[idx], pswds[idx])
+
+			// create name password entry
+			usersMap[users[idx]] = pswds[idx]
+
+			// create list of booked slots for each user
+			usersSlots[users[idx]] = make([]int, 0, maxBookedSlots)
+		}
+	}
 
 	// parse number of max possible booked slots
 	maxBookedSlots, err = strconv.Atoi(os.Args[5])
@@ -73,11 +90,10 @@ func main() {
 		ReadTimeout:  60 * time.Second,
 	}
 
-	// TODO start the queue agent
-	// go ProcessListings(delay)
-
-	log.Println("starting server on localhost:" + os.Args[1])
+	// start processing requests
+	go ProcessListings(1 * time.Second)
 
 	// start server
+	log.Println("starting server on localhost:" + os.Args[1])
 	log.Fatal(srv.ListenAndServe())
 }
