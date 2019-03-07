@@ -75,7 +75,13 @@ func main() {
 
 	// define handlers and routes for PUT requests and GET responses
 	r.HandleFunc("/queue/enqueue", handleEnqueuePUT).Methods(http.MethodPut)
+
+	// GET requests must receive username and password URL queries
 	r.HandleFunc("/queue/msg/{msg_id}", handleEnqueueGET).Methods(http.MethodGet)
+	r.HandleFunc(
+		"/queue/msg/{msg_id}", handleEnqueueGET).Methods(
+		http.MethodGet).Queries(
+		"username", "{username}", "password", "{password}")
 
 	// user views
 	r.HandleFunc("/booking", handleBookings).Methods(http.MethodGet)

@@ -5,9 +5,14 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func handleEnqueuePUT(w http.ResponseWriter, r *http.Request) {
+
+	// TODO add chance to fail
+
 	// check headers
 	if !checkHeaders(r) {
 		w.Write([]byte("missing expected headers as requested by labscript\n"))
@@ -42,5 +47,14 @@ func handleEnqueuePUT(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleEnqueueGET(w http.ResponseWriter, r *http.Request) {
+	msgID := mux.Vars(r)["msg_id"]
+	username := r.FormValue("username")
+	password := r.FormValue("password")
 
+	// TODO handle invalid msg
+	// TODO add chance to fail
+	// TODO handle msg not processed
+	// TODO handle invalid auth
+
+	log.Println(msgID, username, password)
 }
