@@ -71,6 +71,14 @@ trinket 3010 200 "john mike paul" "doe pass test" 2 43
   - [x] Handle URI GETs
   - [x] Return responses
 - [x] Create user views
-- [ ] Fancy user views with Bootstrap
 - [ ] Create binary releases (macOS, Linux)
+- [ ] Write contribution guide
+
+## Extra
+
+I will not be working on these, if you feel generous you are more than welcome
+to contribute to the project.
+
+- [ ] Fancy user views with Bootstrap
 - [ ] Implement stateful server, some database (SQL)
+- [ ] Codebase cleanup and organization
