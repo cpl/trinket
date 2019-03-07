@@ -10,13 +10,13 @@ type ResponseError struct {
 	Body    string `xml:"body"`
 }
 
-var responseErrorAuth = ResponseError{
+var ResponseErrorAuth = ResponseError{
 	XMLName: xml.Name{Local: "response"},
 	Code:    401,
 	Body:    "Action failed due to an invalid username password",
 }
 
-var responseErrorInvalid = ResponseError{
+var ResponseErrorInvalid = ResponseError{
 	XMLName: xml.Name{Local: "response"},
 	Code:    510,
 	Body:    "Invalid Request",

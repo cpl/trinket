@@ -1,4 +1,16 @@
+import sys
 import requests
+
+
+XML = """
+<{req}>
+    <request_id>{id}</request_id>
+    <username>{user}</username>
+    <password>{pasw}</password>
+    <slot_id>5</slot_id>
+</{req}>
+"""
+
 
 URL = "http://localhost:3000/queue/enqueue"
 # URL = "<REDACTED>"
@@ -8,9 +20,7 @@ headers = {
     "Accept": "application/xml"
 }
 
-file_data = None
-with open('test/req.xml', 'rb') as fp:
-    file_data = fp.read()
+file_data = XML.format(req=sys.argv[1], id=int(sys.argv[2]), user=sys.argv[3], pasw=sys.argv[4])
 
 
 response = requests.put(URL, data=file_data, headers=headers)

@@ -17,9 +17,9 @@ func parseListing(listing *Listing) {
 	// validate request
 	// this means checking it has a username, password and unique ID
 	var baseRequest requestBase
-	if err := xml.Unmarshal(listing.request, &baseRequest); err != nil {
+	if err := xml.Unmarshal(listing.Request, &baseRequest); err != nil {
 		log.Printf("invalid request format")
-		listing.response, _ = xml.Marshal(responseErrorInvalid)
+		listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
 		return
 	}
 
@@ -33,7 +33,7 @@ func parseListing(listing *Listing) {
 	// validate username and password
 	// if !checkAuth(baseRequest.Username, baseRequest.Password) {
 	// 	log.Printf("invalid auth for request %d\n", baseRequest.ID)
-	// 	ret, _ := xml.Marshal(responseErrorAuth)
+	// 	ret, _ := xml.Marshal(ResponseErrorAuth)
 	// 	return
 	// }
 
@@ -44,11 +44,11 @@ func parseListing(listing *Listing) {
 		var req RequestAvailability
 
 		// fully parse request
-		if err := xml.Unmarshal(listing.request, &req); err != nil {
+		if err := xml.Unmarshal(listing.Request, &req); err != nil {
 			log.Printf("invalid request format")
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorInvalid)
+			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
 			return
 		}
 
@@ -71,7 +71,7 @@ func parseListing(listing *Listing) {
 		}
 
 		// assign response to listing
-		listing.response = resBinary
+		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
 			req.ID, req.XMLName)
@@ -82,11 +82,11 @@ func parseListing(listing *Listing) {
 		var req RequestReserve
 
 		// fully parse request
-		if err := xml.Unmarshal(listing.request, &req); err != nil {
+		if err := xml.Unmarshal(listing.Request, &req); err != nil {
 			log.Printf("invalid request format")
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorInvalid)
+			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
 			return
 		}
 
@@ -95,7 +95,7 @@ func parseListing(listing *Listing) {
 			log.Printf("invalid auth for request %d\n", req.ID)
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorAuth)
+			listing.Response, _ = xml.Marshal(ResponseErrorAuth)
 			return
 		}
 
@@ -108,7 +108,7 @@ func parseListing(listing *Listing) {
 			resErr.Body = fmt.Sprintf(
 				"Reservation failed, you already hold the maximum permitted number of reservations - %d",
 				maxBookedSlots)
-			listing.response, _ = xml.Marshal(resErr)
+			listing.Response, _ = xml.Marshal(resErr)
 
 			return
 		}
@@ -120,7 +120,7 @@ func parseListing(listing *Listing) {
 			resErr.XMLName = xml.Name{Local: "response"}
 			resErr.Code = 403 // slot does not exist
 			resErr.Body = fmt.Sprintf("Slot %d does not exist", req.SlotID)
-			listing.response, _ = xml.Marshal(resErr)
+			listing.Response, _ = xml.Marshal(resErr)
 
 			return
 		}
@@ -132,7 +132,7 @@ func parseListing(listing *Listing) {
 			resErr.XMLName = xml.Name{Local: "response"}
 			resErr.Code = 409 // also slot is not free
 			resErr.Body = fmt.Sprintf("Slot %d is not free.", req.SlotID)
-			listing.response, _ = xml.Marshal(resErr)
+			listing.Response, _ = xml.Marshal(resErr)
 
 			return
 		}
@@ -154,7 +154,7 @@ func parseListing(listing *Listing) {
 		}
 
 		// assign response to listing
-		listing.response = resBinary
+		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
 			req.ID, req.XMLName)
@@ -165,11 +165,11 @@ func parseListing(listing *Listing) {
 		var req RequestCancel
 
 		// fully parse request
-		if err := xml.Unmarshal(listing.request, &req); err != nil {
+		if err := xml.Unmarshal(listing.Request, &req); err != nil {
 			log.Printf("invalid request format")
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorInvalid)
+			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
 			return
 		}
 
@@ -178,7 +178,7 @@ func parseListing(listing *Listing) {
 			log.Printf("invalid auth for request %d\n", req.ID)
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorAuth)
+			listing.Response, _ = xml.Marshal(ResponseErrorAuth)
 			return
 		}
 
@@ -191,7 +191,7 @@ func parseListing(listing *Listing) {
 			resErr.XMLName = xml.Name{Local: "response"}
 			resErr.Code = 403 // slot does not exist
 			resErr.Body = fmt.Sprintf("Slot %d does not exist", req.SlotID)
-			listing.response, _ = xml.Marshal(resErr)
+			listing.Response, _ = xml.Marshal(resErr)
 
 			return
 		}
@@ -209,7 +209,7 @@ func parseListing(listing *Listing) {
 			resErr.Body = fmt.Sprintf(
 				"Cancel failed, slot %d was not reserved by you",
 				req.SlotID)
-			listing.response, _ = xml.Marshal(resErr)
+			listing.Response, _ = xml.Marshal(resErr)
 
 			return
 		}
@@ -238,7 +238,7 @@ func parseListing(listing *Listing) {
 		}
 
 		// assign response to listing
-		listing.response = resBinary
+		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
 			req.ID, req.XMLName)
@@ -249,11 +249,11 @@ func parseListing(listing *Listing) {
 		var req RequestBookings
 
 		// fully parse request
-		if err := xml.Unmarshal(listing.request, &req); err != nil {
+		if err := xml.Unmarshal(listing.Request, &req); err != nil {
 			log.Printf("invalid request format")
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorInvalid)
+			listing.Response, _ = xml.Marshal(ResponseErrorInvalid)
 			return
 		}
 
@@ -262,7 +262,7 @@ func parseListing(listing *Listing) {
 			log.Printf("invalid auth for request %d\n", req.ID)
 			listing.username = ""
 			listing.password = ""
-			listing.response, _ = xml.Marshal(responseErrorAuth)
+			listing.Response, _ = xml.Marshal(ResponseErrorAuth)
 			return
 		}
 
@@ -283,7 +283,7 @@ func parseListing(listing *Listing) {
 		}
 
 		// assign response to listing
-		listing.response = resBinary
+		listing.Response = resBinary
 
 		log.Printf("parsed request %d of type '%s'\n",
 			req.ID, req.XMLName)

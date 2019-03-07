@@ -14,8 +14,8 @@ type Listing struct {
 	username string
 	password string
 
-	request  []byte
-	response []byte
+	Request  []byte
+	Response []byte
 }
 
 var listingQueue []*Listing
@@ -25,7 +25,7 @@ var listingQueue []*Listing
 func AppendToQueue(request []byte) int {
 	// create listing with request
 	newListing := new(Listing)
-	newListing.request = request
+	newListing.Request = request
 	newListing.Status = "pending"
 
 	// append to queue

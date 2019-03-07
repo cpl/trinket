@@ -29,7 +29,12 @@ XML FORM:
 </reserve>
 */
 type RequestReserve struct {
-	requestBase
+	XMLName xml.Name
+
+	ID       int    `xml:"request_id"`
+	Username string `xml:"username"`
+	Password string `xml:"password"`
+
 	SlotID int `xml:"slot_id"`
 }
 
@@ -46,7 +51,11 @@ XML FORM:
 </availability>
 */
 type RequestAvailability struct {
-	requestBase
+	XMLName xml.Name
+
+	ID       int    `xml:"request_id"`
+	Username string `xml:"username"`
+	Password string `xml:"password"`
 }
 
 /*
@@ -63,7 +72,12 @@ XML FORM:
 </cancel>
 */
 type RequestCancel struct {
-	requestBase
+	XMLName xml.Name
+
+	ID       int    `xml:"request_id"`
+	Username string `xml:"username"`
+	Password string `xml:"password"`
+
 	SlotID int `xml:"slot_id"`
 }
 
@@ -80,5 +94,9 @@ XML FORM:
 </bookings>
 */
 type RequestBookings struct {
-	requestBase
+	XMLName xml.Name
+
+	ID       int    `xml:"request_id"`
+	Username string `xml:"username"`
+	Password string `xml:"password"`
 }
