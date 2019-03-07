@@ -139,6 +139,7 @@ func parseListing(listing *Listing) {
 
 		// assign slot
 		slots[req.SlotID-1] = req.Username
+		usersSlots[req.Username] = append(usersSlots[req.Username], req.SlotID)
 
 		// all OK, prepare response
 		var res ResponseReserve
@@ -215,6 +216,12 @@ func parseListing(listing *Listing) {
 
 		// mark slot as free
 		slots[req.SlotID-1] = "free"
+		// remove item from user slots
+		for idx, slot := range usersSlots[req.Username] {
+			if slot == req.SlotID {
+				usersSlots[req.Username] = remove(usersSlots[req.Username], idx)
+			}
+		}
 
 		// all OK, prepare response
 		var res ResponseBasic
@@ -239,8 +246,49 @@ func parseListing(listing *Listing) {
 		return
 	// --------------------------------------------------------------------
 	case REQUEST_BOOKINGS:
-		// var req RequestAvailability
-		break
+		var req RequestBookings
+
+		// fully parse request
+		if err := xml.Unmarshal(listing.request, &req); err != nil {
+			log.Printf("invalid request format")
+			listing.username = ""
+			listing.password = ""
+			listing.response, _ = xml.Marshal(responseErrorInvalid)
+			return
+		}
+
+		// failed auth
+		if !checkAuth(req.Username, req.Password) {
+			log.Printf("invalid auth for request %d\n", req.ID)
+			listing.username = ""
+			listing.password = ""
+			listing.response, _ = xml.Marshal(responseErrorAuth)
+			return
+		}
+
+		// prepare response
+		var res ResponseBookings
+		res.XMLName = xml.Name{Local: "response"}
+		res.Code = 200
+
+		// get all booked slots for this user
+		for idx := range usersSlots[req.Username] {
+			res.Slots = append(res.Slots, idx+1)
+		}
+
+		// create response payload
+		resBinary, err := xml.Marshal(res)
+		if err != nil {
+			panic(err)
+		}
+
+		// assign response to listing
+		listing.response = resBinary
+
+		log.Printf("parsed request %d of type '%s'\n",
+			req.ID, req.XMLName)
+
+		return
 	// --------------------------------------------------------------------
 	default:
 		panic("should not reach this")
