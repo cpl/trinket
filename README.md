@@ -31,9 +31,9 @@ But seeing the current second year students struggle with the server (to the poi
 * If you have [Go](https://golang.org) installed use the following command in your terminal. You can download the latest version of [Go from here](https://golang.org/dl/).
   * `go get alexandru.cc/go/trinket`
 * The other option is to download the binary from the [GitHub Releases](https://github.com/thee-engineer/trinket/releases) page
-  * [macOS](#)
-  * [Linux x86 (32 bit)](#)
-  * [Linux x64 (64 bit)](#)
+  * [macOS](https://github.com/thee-engineer/trinket/releases/download/v0.1/trinket-macOS)
+  * [Linux x86 (32 bit)](https://github.com/thee-engineer/trinket/releases/download/v0.1/trinket-linux-x86)
+  * [Linux x64 (64 bit)](https://github.com/thee-engineer/trinket/releases/download/v0.1/trinket-linux-x64)
 * Obtain the source code and compile it using Go
   * `git clone https://github.com/thee-engineer/trinket.git`
   * `cd trinket`
