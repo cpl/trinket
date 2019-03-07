@@ -1,8 +1,6 @@
-
-# UNDER DEVELOPMENT
-Expected Friday 8 March - Monday 11 March
-
 # ![Trinket Logo](https://github.com/thee-engineer/trinket/blob/master/trinket.png?raw=true)
+
+[![Go Report Card](https://goreportcard.com/badge/alexandru.cc/go/trinket)](https://goreportcard.com/report/alexandru.cc/go/trinket)
 
 Is a server mimic for COMP28112 exercise 2, which gives you the ability to run it locally and configure it as you wish. No more annoying errors while debugging, no more undefined/unexpected responses. You now have control over the system and can test all edge cases of your program.
 
@@ -31,7 +29,7 @@ But seeing the current second year students struggle with the server (to the poi
 ## Install
 
 * If you have [Go](https://golang.org) installed use the following command in your terminal. You can download the latest version of [Go from here](https://golang.org/dl/).
-  * `go get github.com/thee-engineer/trinket`
+  * `go get alexandru.cc/go/trinket`
 * The other option is to download the binary from the [GitHub Releases](https://github.com/thee-engineer/trinket/releases) page
   * [macOS](#)
   * [Linux x86 (32 bit)](#)
@@ -59,12 +57,12 @@ trinket 3010 200 "john mike paul" "doe pass test" 2
 
 ## TODO
 
-- [ ] Create Wiki detailing the protocol and expected behavior
+- [ ] Create Wiki detailing the protocol, expected & mimic behavior
 - [ ] Finish stateless server mimic
-  - [ ] Receive requests PUT & GET
-  - [ ] Enqueue requests
-  - [ ] Parse listing queue
-  - [ ] Parse individual request
+  - [x] Receive requests PUT
+  - [x] Enqueue requests
+  - [x] Parse listing queue
+  - [x] Parse individual request
   - [ ] Handle URI GETs
   - [ ] Return responses
 - [ ] Create user views (Bootstrap)
