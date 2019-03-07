@@ -35,6 +35,13 @@ func init() {
 
 	log.Printf("generated %d empty slots\n", slotsCount)
 
+	// parse number of max possible booked slots
+	maxBookedSlots, err = strconv.Atoi(os.Args[5])
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("maximum number of booked slots is %d\n", maxBookedSlots)
+
 	// user and password parsing
 	users := strings.Split(os.Args[3], " ")
 	pswds := strings.Split(os.Args[4], " ")
@@ -54,13 +61,6 @@ func init() {
 			usersSlots[users[idx]] = make([]int, 0, maxBookedSlots)
 		}
 	}
-
-	// parse number of max possible booked slots
-	maxBookedSlots, err = strconv.Atoi(os.Args[5])
-	if err != nil {
-		panic(err)
-	}
-	log.Printf("maximum number of booked slots is %d\n", maxBookedSlots)
 
 	// parse port
 	port, err = strconv.Atoi(os.Args[1])

@@ -65,3 +65,25 @@ type ResponseReserve struct {
 	Code    int    `xml:"code"`
 	Reserve string `xml:"body>reserve"`
 }
+
+/*
+ResponseBasic is just a simple Code Body response, similar to the error one,
+this struct exists because the labscript does not cover some cases.
+If this proves to be diffrent from the University server response for requests
+like Cancel, please let me know.
+
+XML FORM:
+<response>
+<code>200</code>
+<body>
+  <reserve>
+    Reserved slot N
+  </reserve>
+</body>
+</response>
+*/
+type ResponseBasic struct {
+	XMLName xml.Name
+	Code    int    `xml:"code"`
+	Body    string `xml:"body"`
+}
