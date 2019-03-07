@@ -53,6 +53,9 @@ func ProcessListings(delay time.Duration) {
 			// get current listing to process and send it to parser
 			parseListing(listingQueue[lastID])
 
+			// mark as finished
+			listingQueue[lastID].Status = "processed"
+
 			// next
 			lastID++
 		}

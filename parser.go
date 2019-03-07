@@ -130,6 +130,8 @@ func parseListing(listing *Listing) {
 
 		// check if invalid slot
 		if req.SlotID < 1 || req.SlotID > len(slots) {
+			log.Printf("invalid slot %d\n", req.SlotID)
+
 			var resErr ResponseError
 
 			resErr.XMLName = xml.Name{Local: "response"}
@@ -142,6 +144,8 @@ func parseListing(listing *Listing) {
 
 		// check slot already taken
 		if slots[req.SlotID-1] != "free" {
+			log.Printf("invalid slot %d, not free\n", req.SlotID)
+
 			var resErr ResponseError
 
 			resErr.XMLName = xml.Name{Local: "response"}
@@ -192,6 +196,8 @@ func parseListing(listing *Listing) {
 		// this is not specified in the docs, but it makes sense right?
 		// you shouldn't be able to cancel a slot that does not exist
 		if req.SlotID < 1 || req.SlotID > len(slots) {
+			log.Printf("invalid slot %d\n", req.SlotID)
+
 			var resErr ResponseError
 
 			resErr.XMLName = xml.Name{Local: "response"}
@@ -208,6 +214,8 @@ func parseListing(listing *Listing) {
 		// the message is just for the human to read, your agent should process
 		// the error code
 		if slots[req.SlotID-1] != req.Username {
+			log.Printf("invalid slot %d, not yours\n", req.SlotID)
+
 			var resErr ResponseError
 
 			resErr.XMLName = xml.Name{Local: "response"}
